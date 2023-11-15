@@ -1,0 +1,10 @@
+{
+    "machines": [
+        "AMachineName",
+        "ASecondMachineName"
+    ],
+    "teams": [
+        "TeamA",
+        "TeamB"
+    ]
+}
