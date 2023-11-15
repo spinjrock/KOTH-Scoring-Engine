@@ -1,0 +1,83 @@
+<html>
+
+    <head>
+
+        <title>Scoring Engine</title>
+
+    </head>
+
+    <body>
+
+        <div>
+
+            <canvas id="score-chart"></canvas>
+
+        </div>
+
+    </body>
+
+</html>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+
+    const ctx = document.getElementById("score-chart")
+
+    function main(){
+        
+        refresh()
+        id = setInterval(refresh, 10000)
+
+    }
+
+    function draw_chart(teamNames, teamPoints){
+        console.log(teamNames)
+        test = []
+        test.push("hello")
+        test.push("there")
+        console.log(test)
+        const ctx = document.getElementById('score-chart');
+        new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ["test","test2"],
+            datasets: [{
+            label: '# of Votes',
+            data: [0,2],
+            borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+            y: {
+                beginAtZero: true
+            }
+            }
+        }
+        });
+    }
+
+    function get_scores(){
+            let teamNames = [];
+            let teamPoints = [];
+            fetch("/scores")
+            .then(response => response.json())
+            .then(data => {
+                for (var key in data.teams){
+                    teamNames.push(data.teams[key]["flag"]);
+                    teamPoints.push(data.teams[key]["points"]);
+                }
+            })
+            return [teamNames, teamPoints];
+        }
+
+    function refresh(){
+        let chartStatus = Chart.getChart("score-chart");
+        if (chartStatus != undefined){
+            chartStatus.destroy();
+        }
+        const [teamNames, teamPoints] = get_scores();
+        draw_chart(teamNames, teamPoints);
+    }
+
+    main()
+</script>

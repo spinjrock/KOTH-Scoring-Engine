@@ -25,12 +25,23 @@ class Machine:
     current_flag = ""
     def __init__(self, machine_name: str):
         self.name = machine_name
+    def to_dict(self):
+        d = {}
+        d["name"] = self.name
+        d["current_flag"] = self.current_flag
+        d["last_heard_from"] = self.last_heard_from
+        return d
 
 class Team:
     points = 0
     flag = ""
     def __init__(self, team_name: str):
         self.flag = team_name
+    def to_dict(self):
+        d = {}
+        d["points"] = self.points
+        d["flag"] = self.flag
+        return d
 
 #Globals
 Incoming_Message_Queue = queue.Queue()
@@ -79,6 +90,16 @@ def thread_tick():
         logging.info(f"tick: {time.localtime().tm_hour}:{time.localtime().tm_min}:{time.localtime().tm_sec}")
         logging.info(f"{[team.flag for team in Teams]}")
         logging.info(f"{[team.points for team in Teams]}")
+        for machine in Machines:
+            d= {}
+            d[machine.name] = machine.to_dict()
+            with open("machines.json", "w") as m:
+                json.dump(d, m)
+        for team in Teams:
+            d = {}
+            d[team.flag] = team.to_dict()
+            with open("teams.json", "w") as t:
+                json.dump(d, t)
         time.sleep(60)
 
 def thread_server():
