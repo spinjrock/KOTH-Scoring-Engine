@@ -10,7 +10,6 @@ import logging
 LOOPBACK_IP = "127.0.0.1"
 RECV_UDP_PORT = 50435
 DATAGRAM_SIZE = 2048
-ACTIVE_IP = LOOPBACK_IP
 MAGIC_BYTES = b"\x13\x90"
 CONFIG_PATH = "config.json"
 
@@ -18,12 +17,13 @@ CONFIG_PATH = "config.json"
 Scoring_Engine_Ip = ""
 Flag_Path = ""
 Machine_Name = ""
+Active_Ip = Scoring_Engine_Ip
 
 async def check_flag():
     try:
-        logging.info(f"Checking Flag: {FLAG_PATH}")
-        with open(FLAG_PATH, "r") as flag_file:
-            flag_content = flag_file.get_content.strip()
+        logging.info(f"Checking Flag: {Flag_Path}")
+        with open(Flag_Path, "r") as flag_file:
+            flag_content = flag_file.read().strip()
             return flag_content
     except:
         return
@@ -57,6 +57,7 @@ if __name__ == "__main__":
         Scoring_Engine_Ip = config["Scoring_Engine_Ip"]
         Machine_Name = config["Machine_Name"]
         Flag_Path = config["Flag_Path"]
+        Active_Ip = Scoring_Engine_Ip
     logging.info("Read Config:")
     logging.info(f"Machine_Name: {Machine_Name}")
     logging.info(f"Flag_Path: {Flag_Path}")
